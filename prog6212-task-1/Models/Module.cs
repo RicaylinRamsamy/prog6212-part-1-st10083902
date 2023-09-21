@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace prog6212_task_1.Models
 {
-    class Module
+    class Module : INotifyPropertyChanged
     {
-        private String code;
-        private String name;
-        private int num_of_credits;
-        private int class_hours_per_week;
-        private int semester_num_of_weeks;
-        private int recommended_self_study_hours_per_week;
-        private Dictionary<DateOnly, int> study_dates = new Dictionary<DateOnly, int>();
+        public String code { get; private set; }
+        public String name { get; private set; }
+        public int num_of_credits { get; private set; }
+        public int class_hours_per_week { get; private set; }
+        public int semester_num_of_weeks { get; private set; }
+        public int recommended_self_study_hours_per_week { get; private set; }
+        public Dictionary<DateOnly, int> study_dates { get; private set; }
 
         public Module(string code, string name, int num_of_credits, int class_hours_per_week, int semester_num_of_weeks)
         {
@@ -22,6 +23,7 @@ namespace prog6212_task_1.Models
             this.class_hours_per_week = class_hours_per_week;
             this.semester_num_of_weeks = semester_num_of_weeks;
             recommended_self_study_hours_per_week = ((num_of_credits * 10) / semester_num_of_weeks) - class_hours_per_week;
+            study_dates= new Dictionary<DateOnly, int>();
         }
 
         public void setHoursStudied(int hours_studied, DateOnly date)
@@ -34,24 +36,40 @@ namespace prog6212_task_1.Models
             {
                 study_dates.Add(date, hours_studied);
             }
+
+            OnPropertyChanged(nameof(study_dates));
         }
 
-        public int getHoursStudiedThisWeek()
+        public int getHoursStudiedThisWeek
         {
-            DateTime today = DateTime.Today;
-            DateOnly startOfWeek = DateOnly.FromDateTime(today.AddDays(-(int)today.DayOfWeek + 1));
-            DateOnly endOfWeek = startOfWeek.AddDays(6);
+            get
+            {
+                DateTime today = DateTime.Today;
+                DateOnly startOfWeek = DateOnly.FromDateTime(today.AddDays(-(int)today.DayOfWeek + 1));
+                DateOnly endOfWeek = startOfWeek.AddDays(6);
 
-            var filtered = study_dates.Where(kvp => kvp.Key >= startOfWeek && kvp.Key <= endOfWeek)
-                         .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                var filtered = study_dates.Where(kvp => kvp.Key >= startOfWeek && kvp.Key <= endOfWeek)
+                             .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-            return filtered.Values.Sum();
+                return filtered.Values.Sum();
+            }
         }
 
-        public int getRemainingSelfStudyHoursThisWeek()
+        public int getRemainingSelfStudyHoursThisWeek
         {
-            int remaining =  recommended_self_study_hours_per_week - getHoursStudiedThisWeek();
-            return remaining < 0 ? 0 : remaining;
+
+            get
+            {
+                int remaining = recommended_self_study_hours_per_week - getHoursStudiedThisWeek;
+                return remaining < 0 ? 0 : remaining;
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
