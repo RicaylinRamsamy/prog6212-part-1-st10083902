@@ -36,5 +36,34 @@ namespace prog6212_task_1
             int hours = module.getHoursStudiedThisWeek();
             int rem = module.getRemainingSelfStudyHoursThisWeek();
         }
+
+        private void submitButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            // Reset error string
+            errorTextBlock.Text = "";
+
+            // Get date from datepicker
+            var date = startDatePicker.SelectedDate;
+            
+            if(date == null)
+            {
+                errorTextBlock.Text += "The start date for the semester is invalid! ";
+            }
+
+
+            // Get number of weeks from textbox
+            int num_of_weeks;
+            var num_of_weeks_str = numWeeksTextbox.Text;
+            try
+            {
+                num_of_weeks = Int32.Parse(num_of_weeks_str);
+            }
+            catch (FormatException)
+            {
+                errorTextBlock.Text += "The number of weeks in the semester is invalid! ";
+            }
+
+        }
     }
 }

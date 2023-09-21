@@ -6,7 +6,36 @@
         xmlns:local="clr-namespace:prog6212_task_1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
-    </Grid>
+    <StackPanel Margin="80">
+        <TextBlock
+            Padding="3"
+            FontSize="15">
+            When does the semester start?
+        </TextBlock>
+        <DatePicker
+            x:Name="startDatePicker"
+            FontSize="15"/>
+
+        <TextBlock
+            Padding="3"
+            FontSize="15"
+            Margin="0, 30 ,0 ,0">
+            How many weeks are in this semester?
+        </TextBlock>
+        <TextBox
+            x:Name="numWeeksTextbox"
+            FontSize="15"/>
+
+        <Button x:Name="submitButton"
+                FontSize="15"
+                Margin="0, 30 ,0 ,0"
+                HorizontalAlignment="Center"
+                Width="100" Click="submitButton_Click">
+
+            Submit
+        </Button>
+        <TextBlock x:Name="errorTextBlock" Margin="0, 20, 0 ,0" HorizontalAlignment="Center" Foreground="Red"></TextBlock>
+    </StackPanel>
 </Window>
+
