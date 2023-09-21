@@ -35,8 +35,6 @@ namespace prog6212_task_1
             module.setHoursStudied(10, new DateOnly(2023, 9, 25));*/
             int hours = module.getHoursStudiedThisWeek();
             int rem = module.getRemainingSelfStudyHoursThisWeek();
-
-            int x = 3;
         }
     }
 }
