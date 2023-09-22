@@ -64,9 +64,9 @@ namespace prog6212_task_1
             if(!is_error) // If there are no errors
             {
                 // Launch next window
-                /*ModulesWindow win = new ModulesWindow(num_of_weeks);
+                ModulesWindow win = new ModulesWindow(num_of_weeks);
                 win.Show();
-                this.Close();*/
+                this.Close();
             }
         }
     }

@@ -13,6 +13,8 @@ namespace prog6212_task_1.Models
         public int class_hours_per_week { get; private set; }
         public int semester_num_of_weeks { get; private set; }
         public int recommended_self_study_hours_per_week { get; private set; }
+
+        // Hold all the dates studying occured in and for how long.
         public Dictionary<DateOnly, int> study_dates { get; private set; }
 
         public Module(string code, string name, int num_of_credits, int class_hours_per_week, int semester_num_of_weeks)
@@ -26,6 +28,8 @@ namespace prog6212_task_1.Models
             study_dates= new Dictionary<DateOnly, int>();
         }
 
+
+        // Set the hours studied for a specific date
         public void setHoursStudied(int hours_studied, DateOnly date)
         {
 
@@ -38,8 +42,11 @@ namespace prog6212_task_1.Models
             }
 
             OnPropertyChanged(nameof(study_dates));
+            OnPropertyChanged(nameof(getRemainingSelfStudyHoursThisWeek));
         }
 
+
+        // Get the total hours studied this week
         public int getHoursStudiedThisWeek
         {
             get
@@ -55,16 +62,27 @@ namespace prog6212_task_1.Models
             }
         }
 
+
+        // Get how many hours of studying are left from the recommended
         public int getRemainingSelfStudyHoursThisWeek
         {
 
             get
             {
                 int remaining = recommended_self_study_hours_per_week - getHoursStudiedThisWeek;
-                return remaining < 0 ? 0 : remaining;
+                return remaining < 0 ? 0 : remaining; // If less than 0, return 0
             }
         }
 
+
+        // Displays the module as a string for the combobox
+        public override string? ToString()
+        {
+            return code;
+        }
+
+
+        // Allows the ui to update automtically when the underlying values change
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
